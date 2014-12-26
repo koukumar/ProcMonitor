@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
@@ -69,7 +70,11 @@ public class Monitor implements Handler, Runnable {
         proc = new ProcRunner(cmd, this);
         proc.start();
         sleep();
+      }else{
+        double qps = Math.round(counter.get()*100.0/(timeInterval/1000))/100.0;
+        log.error("Time " + (new Date()) + " Qps: " + qps );
       }
+      counter.set(0);
     }
   }
 
